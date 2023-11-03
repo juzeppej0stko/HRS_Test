@@ -1,0 +1,1 @@
+[2023-11-03T12:25:57.914Z] [SEVERE] https://www.hrsinternational.com/typo3conf/ext/j77_template/Resources/Public/Frontends/Feditor/img/favicon/favicon.svg - Failed to load resource: the server responded with a status of 404 ()

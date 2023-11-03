@@ -1,0 +1,3 @@
+[2023-11-03T12:26:02.905Z] [SEVERE] https://www.hrsinternational.com/typo3conf/ext/j77_template/Resources/Public/Frontends/Feditor/img/favicon/favicon.svg - Failed to load resource: the server responded with a status of 404 ()
+[2023-11-03T12:26:03.248Z] [SEVERE] https://www.hrsinternational.com/typo3conf/ext/j77_template/Resources/Public/Frontends/Feditor/img/favicon-16x16.png - Failed to load resource: the server responded with a status of 404 ()
+[2023-11-03T12:26:09.303Z] [SEVERE] http://support.hrsinternational.com/crm/js/wahlen.js 382:29 Uncaught TypeError: Cannot set properties of undefined (setting 'innerHTML')

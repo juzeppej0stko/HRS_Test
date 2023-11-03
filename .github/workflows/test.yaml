@@ -1,6 +1,12 @@
 name: CI
 
 on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch
 
 jobs:
@@ -35,8 +41,11 @@ jobs:
           name: Test Results
           path: build/test-results
 
+      - name: Generate Allure report
+        run: ./gradlew allureReport
+
       - name: Publish Allure report
-        uses: franklinjavier/github-action-allure@v1
+        uses: actions/upload-artifact@v2
         with:
-          allure-results-folder: build/allure-results
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          name: Allure Report
+          path: build/reports/allure-report

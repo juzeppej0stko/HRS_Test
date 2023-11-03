@@ -7,6 +7,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      selenoid:
+        image: selenium/standalone-chrome
+        options: --shm-size=2g
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -17,11 +22,8 @@ jobs:
           distribution: 'zulu'
           java-version: '8'
 
-      - name: Start Selenoid
-        uses: aerokube/selenoid@v1.11.0
-
       - name: Build and run tests
-        run: ./gradlew clean test -Dselenide.remote=http://localhost:4444/wd/hub
+        run: ./gradlew clean test -Dselenide.remote=http://selenoid:4444/wd/hub
 
       - name: Download test history
         uses: actions/checkout@v2

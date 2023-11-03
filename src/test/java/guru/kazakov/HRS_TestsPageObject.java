@@ -1,97 +1,123 @@
 package guru.kazakov;
 
-import com.codeborne.pdftest.PDF;
-import com.codeborne.selenide.Configuration;
-import org.junit.jupiter.api.BeforeAll;
+import io.qameta.allure.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 
-import java.io.File;
+import static com.codeborne.selenide.Selenide.title;
+import static io.qameta.allure.Allure.step;
 
-import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selenide.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-public class HRS_Tests {
-    @BeforeAll
-    public static void setUp() {
-        Configuration.baseUrl = "https://www.hrsinternational.com";
-        Configuration.browserSize = "1920x1080";
-        Configuration.holdBrowserOpen = true;
-    }
+public class HRS_TestsPageObject extends TestBase{
 
     @Test
+    @DisplayName("Testing page title")
+    @Owner("Sergey Kazakov")
+    @Feature("Main Page")
+    @Story("Checking the loading of the main page")
+    @Severity(SeverityLevel.NORMAL)
+    @Tag("remote")
     public void testPageTitle() {
-        open("/en");
-        String expectedTitle = "HRS Global - HRS Hospitality & Retail Systems";
-        String actualTitle = title();
-        assertEquals(actualTitle, expectedTitle);
+        step("Open main page", () -> {
+            mainPage.mainPageOpen();
+                });
+        step("Checking if the page title is correct", () -> {
+            mainPage.isPageTitleCorrect(title(), "HRS Global - HRS Hospitality & Retail Systems");
+        });
     }
 
     @Test
+    @DisplayName("Testing main page search")
+    @Owner("Sergey Kazakov")
+    @Feature("Main Page")
+    @Story("Checking the search button and the search results")
+    @Severity(SeverityLevel.NORMAL)
+    @Tag("remote")
     public void testMainPageSearch() {
-        open("/en");
-        //
-        $(".fa-search").click();
-
-        // Ввести поисковой запрос
-        $("#ke_search_searchfield_sword").setValue("hotel").pressEnter();
-
-        // Проверить результаты поиска
-        $(".container-search-results").shouldHave(text("You searched for hotel"));
-
-        // Проверить, что найдено хотя бы одно предложение
-        $$("div.container-search-results div.search-result").shouldHave(sizeGreaterThan(0));
+        step("Open main page", () -> {
+            mainPage.mainPageOpen();
+                });
+        step("Click on the search icon", () -> {
+            mainPage.searchIconClick();
+                });
+        step("Enter Search Query", () -> {
+            mainPage.enterSearchQuery(testData.query);
+                });
+        step("Checking that search results are not empty", () -> {
+            mainPage.areSearchResultsNotEmpty();
+        });
     }
 
     @Test
+    @DisplayName("Testing main page feedback form")
+    @Owner("Sergey Kazakov")
+    @Feature("Main Page")
+    @Story("Checking the feedback form")
+    @Severity(SeverityLevel.NORMAL)
+    @Tag("remote")
     public void testMainPageFeedbackForm() {
-        // Открыть главную страницу
-        open("/en");
-
-        // Нажать на ссылку "Contact us"
-        $("[title=Contact]").click();
-        $("#powermail_field_name").setValue("TestName");
-        $("#powermail_field_e_mail").setValue("mail@test.com");
-        $("#powermail_field_company").setValue("TestCompany");
-        $("#powermail_field_phone").setValue("123456");
-        $("#powermail_field_marker").setValue("TestInterests");
-        $(".label-checkbox").click();
-        $(".btn.primary").click();
-        $(".indent").shouldHave(text("Thank you for contacting HRS International."));
-
+        step("Open main page", () -> {
+            mainPage.mainPageOpen();
+                });
+        step("Cookies Message Close", () -> {
+            mainPage.cookiesMsgClose();
+                });
+        step("Filling out the Contact Form", () -> {
+            mainPage.fillContactForm(testData.name, testData.email,
+                            testData.company, testData.phone, testData.interests);
+                });
+        step("Checking if the consent checkbox is checked", () -> {
+            mainPage.checkTheConsentBox();
+                });
+        step("Checking if the consent checkbox is checked", () -> {
+            mainPage.submitForm();
+                });
+        step("Checking if the Thank You Message Displayed", () -> {
+            mainPage.isThankYouMessageDisplayed();
+        });
     }
 
     @Test
+    @DisplayName("Testing main page country switch")
+    @Owner("Sergey Kazakov")
+    @Feature("Main Page")
+    @Story("Сhecking that the page intended for Norway has opened")
+    @Severity(SeverityLevel.NORMAL)
+    @Tag("remote")
     public void testMainPageLanguageSwitch() {
-        // Открыть главную страницу
-        open("/en");
-
-        // Нажать на ссылку переключения страны
-        $(".js.country").click();
-        $("[title=Norway]").click();
-        String expectedTitle = "HRS Norway - HRS - Hospitality & Retail Systems";
-        String actualTitle = title();
-        assertEquals(actualTitle, expectedTitle);
-
+        step("Open main page", () -> {
+            mainPage.mainPageOpen();
+                });
+        step("Change the region", () -> {
+            mainPage.regionChange();
+                });
+        step("Checking the Correct Page Title", () -> {
+            mainPage.isPageTitleCorrect("HRS Norway - HRS - Hospitality & Retail Systems",
+                    title());
+        });
     }
 
     @Test
+    @DisplayName("Testing support page")
+    @Owner("Sergey Kazakov")
+    @Feature("Support Page")
+    @Story("Checking the loading of the support page. Checking whether a document has been downloaded and whether it contains a certain line")
+    @Severity(SeverityLevel.NORMAL)
+    @Tag("remote")
     public void testSupportPage() throws Exception {
-        // Открытие страницы https://www.hrsinternational.com/en
-        open("/en");
 
-        // Переход на страницу Support
-        $(".external-link").click();
-        switchTo().window(1);
-        $(By.xpath("//a[text()='Documentation']")).click();
-
-        open("http://support.hrsinternational.com/litera/documents/suite_8_en.pdf");
-        File downloadedFile = $(By.linkText("Fidelio v8")).download();
-            PDF content = new PDF(downloadedFile);
-            assertThat(content.text).contains("V8 Development Team");
+        step("Open main page", () -> {
+            mainPage.mainPageOpen();
+                });
+        step("Open support page", () -> {
+            supportPage.supportPageOpen();
+                });
+        step("Open page with documents", () -> {
+            supportPage.docsPageOpen();
+                });
+        step("Checking that the Pdf is loaded And Contains Text", () -> {
+            supportPage.isPdfDownloadedAndContainsText(testData.textInsidePdf);
+        });
         }
 
 }

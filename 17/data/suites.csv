@@ -1,0 +1,6 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Fri Nov 03 12:50:35 GMT 2023","Fri Nov 03 12:50:42 GMT 2023","7057","","guru.kazakov.HRS_TestsPageObject","","guru.kazakov.HRS_TestsPageObject","testMainPageLanguageSwitch","Testing main page country switch",""
+"passed","Fri Nov 03 12:50:14 GMT 2023","Fri Nov 03 12:50:28 GMT 2023","13771","","guru.kazakov.HRS_TestsPageObject","","guru.kazakov.HRS_TestsPageObject","testMainPageFeedbackForm","Testing main page feedback form",""
+"passed","Fri Nov 03 12:50:42 GMT 2023","Fri Nov 03 12:50:47 GMT 2023","4822","","guru.kazakov.HRS_TestsPageObject","","guru.kazakov.HRS_TestsPageObject","testPageTitle","Testing page title",""
+"passed","Fri Nov 03 12:50:47 GMT 2023","Fri Nov 03 12:51:07 GMT 2023","19582","","guru.kazakov.HRS_TestsPageObject","","guru.kazakov.HRS_TestsPageObject","testSupportPage","Testing support page",""
+"passed","Fri Nov 03 12:50:28 GMT 2023","Fri Nov 03 12:50:35 GMT 2023","6710","","guru.kazakov.HRS_TestsPageObject","","guru.kazakov.HRS_TestsPageObject","testMainPageSearch","Testing main page search",""

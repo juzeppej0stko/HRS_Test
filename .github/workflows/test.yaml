@@ -18,7 +18,7 @@ jobs:
           java-version: '8'
 
       - name: Start Selenoid
-        uses: aerokube/selenoid@v1.10.0
+        uses: aerokube/selenoid@v1.11.0
 
       - name: Build and run tests
         run: ./gradlew clean test -Dselenide.remote=http://localhost:4444/wd/hub

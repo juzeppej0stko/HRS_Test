@@ -7,13 +7,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    services:
-      selenoid:
-        image: aerokube/selenoid:latest-release
-        ports:
-          - 4444:4444
-        options: --env BROWSER_VERSION=latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -22,12 +15,13 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '11'
+          distribution: 'adopt' # Specify the desired distribution of Java
 
       - name: Build with Gradle
         run: ./gradlew build
 
       - name: Run tests
-        run: ./gradlew test -Dselenide.remote=http://localhost:4444/wd/hub
+        run: ./gradlew test
 
       - name: Publish test results
         uses: actions/upload-artifact@v2

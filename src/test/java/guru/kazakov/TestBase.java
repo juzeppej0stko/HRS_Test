@@ -22,8 +22,8 @@ SupportPage supportPage = new SupportPage();
     public static void setUp() {
         Configuration.baseUrl = "https://www.hrsinternational.com";
         Configuration.browserSize = "1920x1080";
-        Configuration.holdBrowserOpen = true;
-        open();
+        //Configuration.holdBrowserOpen = true;
+
     }
 
     @BeforeEach

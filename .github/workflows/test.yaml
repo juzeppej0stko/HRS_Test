@@ -1,52 +1,42 @@
-name: Test
+name: CI
 
 on:
   workflow_dispatch
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     services:
       selenoid:
-        image: selenium/standalone-chrome
-        options: --shm-size=2g
+        image: aerokube/selenoid:latest-release
+        ports:
+          - 4444:4444
+        options: --env BROWSER_VERSION=latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Set up Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v2
         with:
-          distribution: 'zulu'
           java-version: '11'
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
 
-      - name: Build and run tests
-        run: ./gradlew clean test -Dselenide.remote=http://selenoid:4444/wd/hub
+      - name: Build with Gradle
+        run: ./gradlew build
 
-      - name: Download test history
-        uses: actions/checkout@v2
-        if: always()
-        continue-on-error: true
+      - name: Run tests
+        run: ./gradlew test -Dselenide.remote=http://localhost:4444/wd/hub
+
+      - name: Publish test results
+        uses: actions/upload-artifact@v2
         with:
-          ref: gh-pages
-          path: gh-pages
+          name: Test Results
+          path: build/test-results
 
-      - name: Generate Allure report
-        uses: simple-elf/allure-report-action@master
-        if: always()
+      - name: Publish Allure report
+        uses: franklinjavier/github-action-allure@v1
         with:
-          gh_pages: gh-pages
-          allure_results: build/allure-results
-          allure_report: allure-report
-          allure_history: allure-history
-
-      - name: Publish report
-        uses: peaceiris/actions-gh-pages@v3
-        if: always()
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: allure-report
+          allure-results-folder: build/allure-results
+          github-token: ${{ secrets.GITHUB_TOKEN }}
